@@ -3,7 +3,21 @@
 
 --------------------------------------------------------------------------------
 
-
+环境：
+  1. Atom编辑器
+  2. 集成服务器环境：Windows-wamp、Linux-Nginx、Mac-xampp
+  3. VMware虚拟机
+  4. CentOS 64bit镜像(mirrors.163.com下载)
+  5. putty、winSCP(Mac用yummy FTP、Linux直接SSH)
+  6. Photoshop CS6以上版本
+  7. git for windows(Mac用git-scm、Linux直接yum/apt)
+  8. TortoiseSVN(Mac用SnailSVN、Linux直接yum/apt)
+  9. Node.js v9.*
+  10. phonegap-cli v6.5.2(不要用最新版)
+  11. APICloud Studio 2
+  12. Navicat for MySQL
+  13. MongoDB
+  14. chrome、Firefox
 
 --------------------------------------------------------------------------------
 
@@ -28,7 +42,7 @@ ctrl+shift+p 调出快捷菜单
     ssh-keygen 生成ssh密钥
 
 2.书写
-  markdow
+  markdown
 
   标题——#,##,###
   列表——- ,1.
@@ -65,4 +79,154 @@ ctrl+shift+p 调出快捷菜单
 9. 三大框架：angular、vue、react
 10. 数据结构、算法、设计模式
 
+--------------------------------------------------------------------------------
+
+基础
+1. ES6
+
+  EMCAScript(EMCA、ES)标准
+
+  JavaScript是EMCAScript的一种
+
+  ES6新语法
+  1. 变量/赋值
+    var     可以重复定义、不能限制修改、没有块级作用域只有函数级作用域
+    let     不能重复定义、变量、有块级作用域
+    const   不能重复定义、常量、有块级作用域
+
+    -------------------------------------------
+
+    解构赋值
+    1. 左右两边结构必须一样
+      let [a,b,c]=[1,2,3]; 是ok的
+      let {a,b,c}={x:1,y:2,t:3}; 是不行的
+    2. 必须定义和赋值同步完成
+
+  2. 函数
+    箭头函数 不能用arguments
+      function(参数,参数){
+        函数体
+      }
+
+      (参数，参数)=>{
+        函数体
+      }
+
+      1. 如果有且仅有1个参数,()可以省
+      2. 如果函数体只有一句话，而且是return,()可以省
+      关于this,箭头函数会改变this
+
+      -------------------------------------------
+
+      ps：
+      array.sort([compareFunction]);
+      function compare(a, b) {
+        if (a is less than b by some ordering criterion) {
+          return -1;
+        }
+        if (a is greater than b by the ordering criterion) {
+          return 1;
+        }
+        // a must be equal to b
+        return 0;
+      }
+
+    -------------------------------------------
+
+    默认参数
+      function(a,b,c){
+        b=b||2;
+        c=c||3;
+      }
+
+      function(a,b=2,c=3){
+
+      }
+
+      c++的默认参数必须放在最后,这个默认参数需要放在最后么?
+
+    参数展开(剩余参数,数组展开)
+      1. 三个点第1个作用：接收剩余参数
+        function show(a,b,...args){
+
+        }
+
+        剩余参数必须在参数列表最后
+
+      2. 三个点第2个作用：展开一个数组
+
+  -------------------------------------------
+
+  3. 数组/json
+
+    数组——5种
+      map    映射:一个对一个
+        let a=[1,2,60,30,80];
+        let b=a.map((item,index)=>2*item);
+
+      filter 过滤
+        let a=[1,2,60,30,80];
+        let b=a.filter(item=>item%2);
+
+      forEach 遍历 仅用于数组 不能break
+        let a=[1,2,60,30,80];
+        let b=0;
+        a.forEach(item=>{
+          b+=item;
+        });
+
+        与for(  in  ) 类似只遍历不为'undefined'的部分
+        可用Array.from([array-like])将类似数组变量转变为数组
+
+      reduce  汇总
+        let a=[,2,,30,80];
+        let b=a.reduce((tmp,item,index)=>{
+          console.log(tmp,item,index);
+          return tmp+item;
+        });
+
+        reduce 实现
+        let s_reduce_f=(tmp,item,index)=>{
+          console.log(tmp,item,index);
+          return tmp+item;
+        };
+        let s_reduce=(a,f)=>{
+          let tmpExist=false;
+          for(let i=1;i<a.length;i++){
+            if(typeof a[i] !=='undefined'){
+              try{tmp}catch(e){tmpExist=false;};
+              if(!tmpExist){
+                var tmp=a[i];
+                tmpExist=true;
+              }else{
+                tmp=f(tmp,a[i],i);
+              }
+            }
+          }
+          return tmp;
+        };
+        let d=s_reduce(a,s_reduce_f);
+
+    -------------------------------------------
+
+    ps:
+    check if variable is defined
+    if(typeof myvar !== 'undefined'){
+
+    }
+    //if variable is not declared, it will be true
+
+    check if variable is declared
+    let a;
+    let aExist=true;
+    try{a}catch(e){aExist=false}
+
+    -------------------------------------------
+
+    json——2种
+      1. 简写名字和值一样可以简写
+      2. function可以不写
+
+  4. 字符串
+    
 --------------------------------------------------------------------------------
