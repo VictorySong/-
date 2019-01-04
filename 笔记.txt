@@ -314,9 +314,119 @@ ctrl+shift+p 调出快捷菜单
           }
         }
 
-  6. Promise
+  6. Promise:解决异步操作 用同步的方式来写异步
+    同步——串行  简单、方便
+    异步——并发  性能高、体验好
 
-  7. generator
+    -----------------------------------------------------------------
+
+    //异步
+    $.ajax({
+      url:'/banner_data',
+      success(banners){
+        $.ajax({
+          url:"/banner_name",
+          success(banners){
+
+          },
+          error(){
+            alert("数据获取失败")
+          }
+        })
+      },
+      error(){
+        alert('数据获取失败');
+      }
+    });
+
+    //同步  为什么这种写法属于同步?
+    let banners=$.ajax({ur:'/banner_data'});
+    let name=$.ajax({ur:'/banner_name'});
+
+    -----------------------------------------------------------------
+
+    let p=new Promise((resolve,reject)=>{
+      //感觉这里头resoleve reject 就是用来接收参数的
+      $.ajax({
+        url:'/banner_data',
+        dataType:'json',
+        success:function(json){
+          resolve(json);
+        },
+        error(err){
+          reject(err);
+        }
+      })
+    });
+    p.then((json)=>{
+      console.log(json);
+    },(err)=>{
+      alert(err);
+    })
+
+    //多个promise
+    Promise.all([p1,p2,p3]).then(arr=>{
+      let [a,b,c]=arr;
+      console.log(arr);
+    },err=>{
+      alert('失败')
+    });//有一个出错就错
+
+    $,ajax是有返回值的 返回值是promis对象
+    $.ajax({
+      url:'/banner_data',
+      dataType:'json'
+    }).then(json=>{
+      alert('成功');
+    }，err=>{
+      alert('失败');
+    })
+
+    Promise.all([
+      $.ajax({url:'1.txt',dataType:'json'});
+      $.ajax({url:'2.txt',dataType:'json'});
+      $.ajax({url:'3.txt',dataType:'json'});
+    ]).then(arr=>{
+      alert('成功');
+    },err=>{
+      alert('失败');
+    })
+
+    1. Promise有用——解除异步操作
+    2. Promise有局限性——带逻辑的异步操作麻烦
+
+    Promise.all();     与：所有的都成功
+    Promise.race();    或：只要有一个完成就行
+
+    ---------------------------------------------------------------
+
+    ps:
+    回调 <-> 轮询
+      1. 不是定义的人调用
+      2. 什么时候调用不清楚
+
+    ---------------------------------------------------------------
+
+  7. generator-生成器
+     能暂停
+     function *show(){
+       alert('aa');
+       yield;
+       //yield 55;
+       //let a=yield;
+       alert('bb');
+     }
+     let gen=show();//返回的是一个generator对象(iterator对象)
+     gen.next();
+     setTimeout(function(){
+       gen.next();
+     },5000);
+
+     yield
+       1. 参数   只能传一个参数  (通过.next([])传参)
+       2. 返回   return (返回对象{value: ,done: bool})
+
+     箭头函数没生成器
 
   ES7
   8. async/await
