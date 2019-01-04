@@ -155,7 +155,7 @@ ctrl+shift+p 调出快捷菜单
 
       2. 三个点第2个作用：展开一个数组
 
-  -------------------------------------------
+    -----------------------------------------
 
   3. 数组/json
 
@@ -228,5 +228,156 @@ ctrl+shift+p 调出快捷菜单
       2. function可以不写
 
   4. 字符串
-    
+    字符串模板：变量植入、任意折行
+
+    let json={name:"song",age:18};
+    console.log(`我的名字是${json.name}年龄是${json.age}`);
+
+    console.log(`原样
+    输出`);
+
+    startsWith()
+    endsWith()
+
+  5. 面向对象
+    箭头this、bind
+
+    传统面向对象：
+      function Person(name,age){
+        this.name=name;
+        this.age=age;
+      }
+
+      Person.prototype.showname=function(){
+        console.log(this.name);
+      }
+
+      let t=new Person('td',18);
+
+      //继承
+      function Worker(name,age,job){
+        Person.call(this,name,age);
+        this.job=job;
+      }
+
+      Worker.prototype=new Person();
+      Worker.prototype.constructor=Worker;
+      Worker.prototype.showJob(){
+        console.log(`我的工作是${this.job}`);
+      }
+
+    新
+      class Person{
+        constructor(name,age){
+          this.name=name;
+          this.age=age;
+        }
+
+        showName(){
+          console.log(this.name);
+        }
+      }
+
+      class Worker extents Person{
+        constructor(name,age,job){
+          super(name,age);
+          this.job=job;
+        }
+
+        showJob(){
+          console.log(`我的工作是${this.job}`);
+        }
+      }
+
+      新旧方法可以混写
+      extens 继承方法
+      super 继承属性
+      新式类中可以有内部类
+
+    this
+      let p=new Person('fjk',12);
+      document.onclick=p.showName;//会出错,this指向document
+      传统解决：事件的影响不会超过一层
+        document.onclick=function(){
+          p.showName();
+        }
+
+      新:function 的bind
+        document.onclick=p.showName.bind(p);
+
+    箭头函数this
+      普通函数:取决于谁调用 this总变
+      箭头函数:取决于所在环境 this不变(不能通过bind来修改)
+        window.onload=function(){
+          ()=>{
+            this; //this指window
+          }
+        }
+
+  6. Promise
+
+  7. generator
+
+  ES7
+  8. async/await
+
+  ---------------------------------------------------------------
+
+  ps:
+  js支持并发webworkder
+
+  变量提升(专业叫法：变量预解析 但let不存在变量预解析)
+    js会将变量声明提到作用域最上头(不包含赋值)
+    var a=12;
+    function show(){
+      alert(a);
+      var a=5;
+    }
+    show();
+    //undefined
+
+    等价于
+    var a;
+    a=12;
+    function show(){
+      var a;
+      alert(a);
+      a=5;
+    }
+    show();
+
+  closure:能够读取其他函数内部变量的函数
+    1. 读取其他函数内部变量
+    2. 让这些变量保存在内存中
+
+    var name = "The Window";
+    var object={
+      naem:"my object";
+      getNameFunc:function(){
+        return function(){
+          return this.name;
+        }
+      }
+    }
+    alert(object.getNameFunc()());//this指向调用的
+
+    var name = "The Window";
+    var object={
+      naem:"my object";
+      getNameFunc:function(){
+        that=this;
+        return function(){
+          return that.name;
+        }
+      }
+    }
+    alert(object.getNameFunc()());//闭包
+
+  chain scope:父对象的所有变量对子对象可见
+  ---------------------------------------------------------------
+
+
+
+
+
 --------------------------------------------------------------------------------
