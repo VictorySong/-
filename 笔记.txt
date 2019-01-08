@@ -691,14 +691,8 @@ atom
           }
         }
 
-        post提交到后台的三种content-type
-          application/x-www-form-urlencoded
-          text/plain
-
 
         表单提交文件时需要设置enctype属性为multipart/form-data
-
-
 
       --------------------------------------------------------------------------
 
