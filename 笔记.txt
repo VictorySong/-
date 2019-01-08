@@ -1,6 +1,3 @@
-
-
-
 --------------------------------------------------------------------------------
 
 环境：
@@ -22,44 +19,44 @@
 --------------------------------------------------------------------------------
 
 atom
-1.优点:插件丰富
-2.缺点:打开大文件卡
+  1.优点:插件丰富
+  2.缺点:打开大文件卡
+
+  ctrl+shift+p 调出快捷菜单
 
 --------------------------------------------------------------------------------
-
-ctrl+shift+p 调出快捷菜单
 
 插件
 
 --------------------------------------------------------------------------------
 
 工具:
-1.版本控制
-  svn-中心服务器 checkout commit          update
-  git-去中心化的 clone    add/commit/push pull
-    .gitignore 这个文件会分发给其他人,高层的.gitignore会被低层的.gitignore覆盖掉
-    $GIT_DIR/info/exclude 将不需要分享给其他人的文件保存到这个文件夹
-    ssh-keygen 生成ssh密钥
+  1.版本控制
+    svn-中心服务器 checkout commit          update
+    git-去中心化的 clone    add/commit/push pull
+      .gitignore 这个文件会分发给其他人,高层的.gitignore会被低层的.gitignore覆盖掉
+      $GIT_DIR/info/exclude 将不需要分享给其他人的文件保存到这个文件夹
+      ssh-keygen 生成ssh密钥
 
-2.书写
-  markdown
+  2.书写
+    markdown
 
-  标题——#,##,###
-  列表——- ,1.
-  加粗——**xx**
-  引用——>xx
-  代码——```xx```
+    标题——#,##,###
+    列表——- ,1.
+    加粗——**xx**
+    引用——>xx
+    代码——```xx```
 
-3.编译、打包
+  3.编译、打包
 
-  编译：ES6 -> ES5 babel
-  打包：
+    编译：ES6 -> ES5 babel
+    打包：
 
-  万能：grunt、gulp       老了
-  编译：bable、browserify 单一
-  同步：browser-sync      单一
+    万能：grunt、gulp       老了
+    编译：bable、browserify 单一
+    同步：browser-sync      单一
 
-  WebPack主力
+    WebPack主力
 
 --------------------------------------------------------------------------------
 
@@ -68,16 +65,16 @@ ctrl+shift+p 调出快捷菜单
 --------------------------------------------------------------------------------
 
 课程内容：
-1. 基础知识：ES6/ES7、HTML/CSS3、数据交互...
-2. 移动端：布局、touch、库
-3. 图形：canvas、SVG/VML、Raphael、d3、echarts、WebGL...
-4. 游戏：
-5. 工具：版本控制、编译、打包...
-6. 后台：Node、express、KDA、爬虫...
-7. 混合开发
-8. 微信：公号、小程序
-9. 三大框架：angular、vue、react
-10. 数据结构、算法、设计模式
+  1. 基础知识：ES6/ES7、HTML/CSS3、数据交互...
+  2. 移动端：布局、touch、库
+  3. 图形：canvas、SVG/VML、Raphael、d3、echarts、WebGL...
+  4. 游戏：
+  5. 工具：版本控制、编译、打包...
+  6. 后台：Node、express、KDA、爬虫...
+  7. 混合开发
+  8. 微信：公号、小程序
+  9. 三大框架：angular、vue、react
+  10. 数据结构、算法、设计模式
 
 --------------------------------------------------------------------------------
 
@@ -89,402 +86,646 @@ ctrl+shift+p 调出快捷菜单
   JavaScript是EMCAScript的一种
 
   ES6新语法
-  1. 变量/赋值
-    var     可以重复定义、不能限制修改、没有块级作用域只有函数级作用域
-    let     不能重复定义、变量、有块级作用域
-    const   不能重复定义、常量、有块级作用域
-
-    -------------------------------------------
-
-    解构赋值
-    1. 左右两边结构必须一样
-      let [a,b,c]=[1,2,3]; 是ok的
-      let {a,b,c}={x:1,y:2,t:3}; 是不行的
-    2. 必须定义和赋值同步完成
-
-  2. 函数
-    箭头函数 不能用arguments
-      function(参数,参数){
-        函数体
-      }
-
-      (参数，参数)=>{
-        函数体
-      }
-
-      1. 如果有且仅有1个参数,()可以省
-      2. 如果函数体只有一句话，而且是return,()可以省
-      关于this,箭头函数会改变this
+    1. 变量/赋值
+      var     可以重复定义、不能限制修改、没有块级作用域只有函数级作用域
+      let     不能重复定义、变量、有块级作用域
+      const   不能重复定义、常量、有块级作用域
 
       -------------------------------------------
 
-      ps：
-      array.sort([compareFunction]);
-      function compare(a, b) {
-        if (a is less than b by some ordering criterion) {
-          return -1;
-        }
-        if (a is greater than b by the ordering criterion) {
-          return 1;
-        }
-        // a must be equal to b
-        return 0;
-      }
+      解构赋值
+      1. 左右两边结构必须一样
+        let [a,b,c]=[1,2,3]; 是ok的
+        let {a,b,c}={x:1,y:2,t:3}; 是不行的
+      2. 必须定义和赋值同步完成
 
-    -------------------------------------------
-
-    默认参数
-      function(a,b,c){
-        b=b||2;
-        c=c||3;
-      }
-
-      function(a,b=2,c=3){
-
-      }
-
-      c++的默认参数必须放在最后,这个默认参数需要放在最后么?
-
-    参数展开(剩余参数,数组展开)
-      1. 三个点第1个作用：接收剩余参数
-        function show(a,b,...args){
-
+    2. 函数
+      箭头函数 不能用arguments
+        function(参数,参数){
+          函数体
         }
 
-        剩余参数必须在参数列表最后
+        (参数，参数)=>{
+          函数体
+        }
 
-      2. 三个点第2个作用：展开一个数组
+        1. 如果有且仅有1个参数,()可以省
+        2. 如果函数体只有一句话，而且是return,()可以省
+        关于this,箭头函数会改变this
 
-    -----------------------------------------
+        -------------------------------------------
 
-  3. 数组/json
+        ps：
+        array.sort([compareFunction]);
+        function compare(a, b) {
+          if (a is less than b by some ordering criterion) {
+            return -1;
+          }
+          if (a is greater than b by the ordering criterion) {
+            return 1;
+          }
+          // a must be equal to b
+          return 0;
+        }
 
-    数组——5种
-      map    映射:一个对一个
-        let a=[1,2,60,30,80];
-        let b=a.map((item,index)=>2*item);
+      -------------------------------------------
 
-      filter 过滤
-        let a=[1,2,60,30,80];
-        let b=a.filter(item=>item%2);
+      默认参数
+        function(a,b,c){
+          b=b||2;
+          c=c||3;
+        }
 
-      forEach 遍历 仅用于数组 不能break
-        let a=[1,2,60,30,80];
-        let b=0;
-        a.forEach(item=>{
-          b+=item;
-        });
+        function(a,b=2,c=3){
 
-        与for(  in  ) 类似只遍历不为'undefined'的部分
-        可用Array.from([array-like])将类似数组变量转变为数组
+        }
 
-      reduce  汇总
-        let a=[,2,,30,80];
-        let b=a.reduce((tmp,item,index)=>{
-          console.log(tmp,item,index);
-          return tmp+item;
-        });
+        c++的默认参数必须放在最后,这个默认参数需要放在最后么?
 
-        reduce 实现
-        let s_reduce_f=(tmp,item,index)=>{
-          console.log(tmp,item,index);
-          return tmp+item;
-        };
-        let s_reduce=(a,f)=>{
-          let tmpExist=false;
-          for(let i=1;i<a.length;i++){
-            if(typeof a[i] !=='undefined'){
-              try{tmp}catch(e){tmpExist=false;};
-              if(!tmpExist){
-                var tmp=a[i];
-                tmpExist=true;
-              }else{
-                tmp=f(tmp,a[i],i);
+      参数展开(剩余参数,数组展开)
+        1. 三个点第1个作用：接收剩余参数
+          function show(a,b,...args){
+
+          }
+
+          剩余参数必须在参数列表最后
+
+        2. 三个点第2个作用：展开一个数组
+
+      -----------------------------------------
+
+    3. 数组/json
+
+      数组——5种
+        map    映射:一个对一个
+          let a=[1,2,60,30,80];
+          let b=a.map((item,index)=>2*item);
+
+        filter 过滤
+          let a=[1,2,60,30,80];
+          let b=a.filter(item=>item%2);
+
+        forEach 遍历 仅用于数组 不能break
+          let a=[1,2,60,30,80];
+          let b=0;
+          a.forEach(item=>{
+            b+=item;
+          });
+
+          与for(  in  ) 类似只遍历不为'undefined'的部分
+          可用Array.from([array-like])将类似数组变量转变为数组
+
+        reduce  汇总
+          let a=[,2,,30,80];
+          let b=a.reduce((tmp,item,index)=>{
+            console.log(tmp,item,index);
+            return tmp+item;
+          });
+
+          reduce 实现
+          let s_reduce_f=(tmp,item,index)=>{
+            console.log(tmp,item,index);
+            return tmp+item;
+          };
+          let s_reduce=(a,f)=>{
+            let tmpExist=false;
+            for(let i=1;i<a.length;i++){
+              if(typeof a[i] !=='undefined'){
+                try{tmp}catch(e){tmpExist=false;};
+                if(!tmpExist){
+                  var tmp=a[i];
+                  tmpExist=true;
+                }else{
+                  tmp=f(tmp,a[i],i);
+                }
               }
             }
-          }
-          return tmp;
-        };
-        let d=s_reduce(a,s_reduce_f);
+            return tmp;
+          };
+          let d=s_reduce(a,s_reduce_f);
 
-    -------------------------------------------
+      -------------------------------------------
 
-    ps:
-    check if variable is defined
-    if(typeof myvar !== 'undefined'){
+      ps:
+      check if variable is defined
+      if(typeof myvar !== 'undefined'){
 
-    }
-    //if variable is not declared, it will be true
-
-    check if variable is declared
-    let a;
-    let aExist=true;
-    try{a}catch(e){aExist=false}
-
-    -------------------------------------------
-
-    json——2种
-      1. 简写名字和值一样可以简写
-      2. function可以不写
-
-  4. 字符串
-    字符串模板：变量植入、任意折行
-
-    let json={name:"song",age:18};
-    console.log(`我的名字是${json.name}年龄是${json.age}`);
-
-    console.log(`原样
-    输出`);
-
-    startsWith()
-    endsWith()
-
-  5. 面向对象
-    箭头this、bind
-
-    传统面向对象：
-      function Person(name,age){
-        this.name=name;
-        this.age=age;
       }
+      //if variable is not declared, it will be true
 
-      Person.prototype.showname=function(){
-        console.log(this.name);
-      }
+      check if variable is declared
+      let a;
+      let aExist=true;
+      try{a}catch(e){aExist=false}
 
-      let t=new Person('td',18);
+      -------------------------------------------
 
-      //继承
-      function Worker(name,age,job){
-        Person.call(this,name,age);
-        this.job=job;
-      }
+      json——2种
+        1. 简写名字和值一样可以简写
+        2. function可以不写
 
-      Worker.prototype=new Person();
-      Worker.prototype.constructor=Worker;
-      Worker.prototype.showJob(){
-        console.log(`我的工作是${this.job}`);
-      }
+    4. 字符串
+      字符串模板：变量植入、任意折行
 
-    新
-      class Person{
-        constructor(name,age){
+      let json={name:"song",age:18};
+      console.log(`我的名字是${json.name}年龄是${json.age}`);
+
+      console.log(`原样
+      输出`);
+
+      startsWith()
+      endsWith()
+
+    5. 面向对象
+      箭头this、bind
+
+      传统面向对象：
+        function Person(name,age){
           this.name=name;
           this.age=age;
         }
 
-        showName(){
+        Person.prototype.showname=function(){
           console.log(this.name);
         }
-      }
 
-      class Worker extents Person{
-        constructor(name,age,job){
-          super(name,age);
+        let t=new Person('td',18);
+
+        //继承
+        function Worker(name,age,job){
+          Person.call(this,name,age);
           this.job=job;
         }
 
-        showJob(){
+        Worker.prototype=new Person();
+        Worker.prototype.constructor=Worker;
+        Worker.prototype.showJob(){
           console.log(`我的工作是${this.job}`);
         }
-      }
 
-      新旧方法可以混写
-      extens 继承方法
-      super 继承属性
-      新式类中可以有内部类
+      新
+        class Person{
+          constructor(name,age){
+            this.name=name;
+            this.age=age;
+          }
 
-    this
-      let p=new Person('fjk',12);
-      document.onclick=p.showName;//会出错,this指向document
-      传统解决：事件的影响不会超过一层
-        document.onclick=function(){
-          p.showName();
-        }
-
-      新:function 的bind
-        document.onclick=p.showName.bind(p);
-
-    箭头函数this
-      普通函数:取决于谁调用 this总变
-      箭头函数:取决于所在环境 this不变(不能通过bind来修改)
-        window.onload=function(){
-          ()=>{
-            this; //this指window
+          showName(){
+            console.log(this.name);
           }
         }
 
-  6. Promise:解决异步操作 用同步的方式来写异步
-    同步——串行  简单、方便
-    异步——并发  性能高、体验好
-
-    -----------------------------------------------------------------
-
-    //异步
-    $.ajax({
-      url:'/banner_data',
-      success(banners){
-        $.ajax({
-          url:"/banner_name",
-          success(banners){
-
-          },
-          error(){
-            alert("数据获取失败")
+        class Worker extents Person{
+          constructor(name,age,job){
+            super(name,age);
+            this.job=job;
           }
-        })
-      },
-      error(){
-        alert('数据获取失败');
-      }
-    });
 
-    //同步  为什么这种写法属于同步?
-    let banners=$.ajax({ur:'/banner_data'});
-    let name=$.ajax({ur:'/banner_name'});
+          showJob(){
+            console.log(`我的工作是${this.job}`);
+          }
+        }
 
-    -----------------------------------------------------------------
+        新旧方法可以混写
+        extens 继承方法
+        super 继承属性
+        新式类中可以有内部类
 
-    let p=new Promise((resolve,reject)=>{
-      //感觉这里头resoleve reject 就是用来接收参数的
+      this
+        let p=new Person('fjk',12);
+        document.onclick=p.showName;//会出错,this指向document
+        传统解决：事件的影响不会超过一层
+          document.onclick=function(){
+            p.showName();
+          }
+
+        新:function 的bind
+          document.onclick=p.showName.bind(p);
+
+      箭头函数this
+        普通函数:取决于谁调用 this总变
+        箭头函数:取决于所在环境 this不变(不能通过bind来修改)
+          window.onload=function(){
+            ()=>{
+              this; //this指window
+            }
+          }
+
+    6. Promise:解决异步操作 用同步的方式来写异步
+      同步——串行  简单、方便
+      异步——并发  性能高、体验好
+
+      -----------------------------------------------------------------
+
+      //异步
       $.ajax({
         url:'/banner_data',
-        dataType:'json',
-        success:function(json){
-          resolve(json);
+        success(banners){
+          $.ajax({
+            url:"/banner_name",
+            success(banners){
+
+            },
+            error(){
+              alert("数据获取失败")
+            }
+          })
         },
-        error(err){
-          reject(err);
+        error(){
+          alert('数据获取失败');
         }
+      });
+
+      //同步  为什么这种写法属于同步?
+      let banners=$.ajax({ur:'/banner_data'});
+      let name=$.ajax({ur:'/banner_name'});
+
+      -----------------------------------------------------------------
+
+      let p=new Promise((resolve,reject)=>{
+        //感觉这里头resoleve reject 就是用来接收参数的
+        $.ajax({
+          url:'/banner_data',
+          dataType:'json',
+          success:function(json){
+            resolve(json);
+          },
+          error(err){
+            reject(err);
+          }
+        })
+      });
+      p.then((json)=>{
+        console.log(json);
+      },(err)=>{
+        alert(err);
       })
-    });
-    p.then((json)=>{
-      console.log(json);
-    },(err)=>{
-      alert(err);
-    })
 
-    //多个promise
-    Promise.all([p1,p2,p3]).then(arr=>{
-      let [a,b,c]=arr;
-      console.log(arr);
-    },err=>{
-      alert('失败')
-    });//有一个出错就错
+      //多个promise
+      Promise.all([p1,p2,p3]).then(arr=>{
+        let [a,b,c]=arr;
+        console.log(arr);
+      },err=>{
+        alert('失败')
+      });//有一个出错就错
 
-    $,ajax是有返回值的 返回值是promis对象
-    $.ajax({
-      url:'/banner_data',
-      dataType:'json'
-    }).then(json=>{
-      alert('成功');
-    }，err=>{
-      alert('失败');
-    })
+      $,ajax是有返回值的 返回值是promis对象
+      $.ajax({
+        url:'/banner_data',
+        dataType:'json'
+      }).then(json=>{
+        alert('成功');
+      }，err=>{
+        alert('失败');
+      })
 
-    Promise.all([
-      $.ajax({url:'1.txt',dataType:'json'});
-      $.ajax({url:'2.txt',dataType:'json'});
-      $.ajax({url:'3.txt',dataType:'json'});
-    ]).then(arr=>{
-      alert('成功');
-    },err=>{
-      alert('失败');
-    })
+      Promise.all([
+        $.ajax({url:'1.txt',dataType:'json'});
+        $.ajax({url:'2.txt',dataType:'json'});
+        $.ajax({url:'3.txt',dataType:'json'});
+      ]).then(arr=>{
+        alert('成功');
+      },err=>{
+        alert('失败');
+      })
 
-    1. Promise有用——解除异步操作
-    2. Promise有局限性——带逻辑的异步操作麻烦
+      1. Promise有用——解除异步操作
+      2. Promise有局限性——带逻辑的异步操作麻烦
 
-    Promise.all();     与：所有的都成功
-    Promise.race();    或：只要有一个完成就行
+      Promise.all();     与：所有的都成功
+      Promise.race();    或：只要有一个完成就行
 
-    ---------------------------------------------------------------
+      ---------------------------------------------------------------
 
-    ps:
-    回调 <-> 轮询
-      1. 不是定义的人调用
-      2. 什么时候调用不清楚
+      ps:
+      回调 <-> 轮询
+        1. 不是定义的人调用
+        2. 什么时候调用不清楚
 
-    ---------------------------------------------------------------
+      ---------------------------------------------------------------
 
-  7. generator-生成器
-     能暂停
-     function *show(){
-       alert('aa');
-       yield;
-       //yield 55;
-       //let a=yield;
-       alert('bb');
-     }
-     let gen=show();//返回的是一个generator对象(iterator对象)
-     gen.next();
-     setTimeout(function(){
+    7. generator-生成器
+       能暂停
+       function *show(){
+         alert('aa');
+         let a=yield 55;
+         alert('bb'+a);
+       }
+       let gen=show();//返回的是一个generator对象(iterator对象)
        gen.next();
-     },5000);
+       setTimeout(function(){
+         gen.next();
+       },5000);
 
-     yield
-       1. 参数   只能传一个参数  (通过.next([])传参)
-       2. 返回   return (返回对象{value: ,done: bool})
+       yield
+         1. 参数   只能传一个参数  (通过.next([])传参)
+         2. 返回   return (返回对象{value: ,done: bool})
 
-     箭头函数没生成器
+       箭头函数没生成器
 
-  ES7
-  8. async/await
+       generator+promise 配合：
+       1. 外来的runner辅助执行——不统一、不标准、性能低
+       2. generator函数不能使用箭头函数
+
+    ES7
+    8. async/await
+       await 用来检测异步操作
+       async function xxx(){
+         ...
+         let res=await xx;
+         ...
+         let res2=await xx;
+         ...
+       }
+
+       let 结果=await 异步操作-promise、generator、另一个async函数;
+
+       async function show(){
+         let data1=await $.ajax({url:'test1.txt',dataType:'json'});
+         let data2=await $.ajax({url:'test2.txt',dataType:'json'});
+         let data3=await $.ajax({url:'test3.txt',dataType:'json'});
+         console.log(data1,data2,data3);
+       }
+
+       (async ()=>{
+         let data1=await $.ajax({url:'test1.txt',dataType:'json'});
+         let data2=await $.ajax({url:'test2.txt',dataType:'json'});
+         let data3=await $.ajax({url:'test3.txt',dataType:'json'});
+         //三者是串行的
+         console.log(data1,data2,data3);
+       })();
+
+       await 错误处理(一步出错就出错)
+       try{
+         show();
+       }catch(e){
+         alert('有问题');
+         throw new Error();
+       }
+       无法捕获具体哪句异常
+       -------------------------------------------------------
+
+       ps:
+       如果按普通方式来写,省了编译,会不会有性能优势
+       程序:
+         1. 性能
+         2. 维护性、可读性、工程性
+         3. 健壮性
+         4. 用户体验
+
+       性能：
+        1. 网络性能  大部分
+        2. 执行性能  小部分
+
+       ------------------------------------------------------
+    ES6编译:
+      ES6->ES5
+
+      Node:中间层
+      1. web后台(小规模)
+      2. 工具
+      nodejs.org
+      node:语言、环境、平台
+      npm:node package manager
+
+      npm包管理
+      1. 自动下载、升级
+      2. 自动下载依赖包
+      npm.taobao.org
+      cnpm init 创建packjson
+
+      babel:polyfill 工具
+      http://babeljs.io/
+      preset——预设
 
   ---------------------------------------------------------------
 
   ps:
-  js支持并发webworkder
+    js支持并发webworkder
 
-  变量提升(专业叫法：变量预解析 但let不存在变量预解析)
-    js会将变量声明提到作用域最上头(不包含赋值)
-    var a=12;
-    function show(){
-      alert(a);
-      var a=5;
-    }
-    show();
-    //undefined
+    变量提升(专业叫法：变量预解析 但let不存在变量预解析)
+      js会将变量声明提到作用域最上头(不包含赋值)
+      var a=12;
+      function show(){
+        alert(a);
+        var a=5;
+      }
+      show();
+      //undefined
 
-    等价于
-    var a;
-    a=12;
-    function show(){
+      等价于
       var a;
-      alert(a);
-      a=5;
-    }
-    show();
+      a=12;
+      function show(){
+        var a;
+        alert(a);
+        a=5;
+      }
+      show();
 
-  closure:能够读取其他函数内部变量的函数
-    1. 读取其他函数内部变量
-    2. 让这些变量保存在内存中
+    closure:能够读取其他函数内部变量的函数
+      1. 读取其他函数内部变量
+      2. 让这些变量保存在内存中
 
-    var name = "The Window";
-    var object={
-      naem:"my object";
-      getNameFunc:function(){
-        return function(){
-          return this.name;
+      var name = "The Window";
+      var object={
+        naem:"my object";
+        getNameFunc:function(){
+          return function(){
+            return this.name;
+          }
         }
       }
-    }
-    alert(object.getNameFunc()());//this指向调用的
+      alert(object.getNameFunc()());//this指向调用的
 
-    var name = "The Window";
-    var object={
-      naem:"my object";
-      getNameFunc:function(){
-        that=this;
-        return function(){
-          return that.name;
+      var name = "The Window";
+      var object={
+        naem:"my object";
+        getNameFunc:function(){
+          that=this;
+          return function(){
+            return that.name;
+          }
         }
       }
-    }
-    alert(object.getNameFunc()());//闭包
+      alert(object.getNameFunc()());//闭包
 
-  chain scope:父对象的所有变量对子对象可见
+      chain scope:父对象的所有变量对子对象可见
+
   ---------------------------------------------------------------
+
+  底层原理
+    数据交互
+      1. 表单      最基本最简单        http所有数据其实都是表单
+      2. ajax      不用刷新页面       网慢的情况下可能存在重复提交
+      3. jsonp     跨域,安全性太差    只能发起get请求
+      4. WebSocket 快、双向、跨域
+
+      ajax      性能低                   单工
+      websocket 性能能高   考虑大量数据   双工    跨域
+
+      ajax 轮询更新数据
+      websocket
+
+    跨域:
+      必须情况:
+        1. 网址域名改变
+        2. 第三方数据
+
+      方式:
+        1. 表单
+        2. ajax——麻烦、安全
+        3. jsonp——简单、有风险
+        4. ws
+
+    1. http协议
+      http1.0   一次性连接
+      http1.1   保持连接   性能提升
+      http2.0(草案)
+        1. 强制https
+        2. 自带双向通信
+        3. 多路复用
+      http      容易被攻击
+      https     安全
+
+      1. 三次握手
+      2. http
+        http头<=32k
+        http体<=1g
+
+    ---------------------------------------------------------------------------
+
+    osi七层参考模型
+      1. 物理层
+      2. 数据链路层
+      3. 网络层
+      4. 传输层
+      5. 会话层
+      6. 表达层
+      7. 应用层
+
+    五层模型
+      1. 物理层
+      2. 链路层
+      3. 网络层
+      4. 传输层
+        TCP——传输控制协议
+        UDP——用户数据报协议
+      5. 应用层
+
+    ---------------------------------------------------------------------------
+
+    2. 表单(服务器不区分表单、ajax和jsonp)
+      1. 属性
+        action:提交地址
+        methods:方式:GET/POST/HEAD/DELETE
+        name:必须加、可以重复(重复情况下服务器那边是数组)
+        value:
+        type:
+
+      2. 数据提交方法
+        GET    数据存在url里
+          1. 容量有限
+          2. 看得见(表单)
+          3. 有缓存
+          4. 利于分享和收藏
+
+        POST   数据放在http-body里
+          1. 容量大
+          2. 看不见
+          3. 无缓存
+          4. 无法分享和收藏
+
+        两种方法安全性相同
+
+      3. 校验
+        可以
+        const $=function(...args){
+          return document.querySelectoAll(...args);
+        }
+        不能
+        const $=document.querySelectoAll;//这种写会导致this 指向window而不是document
+        可以
+        const $=document.querySelectoAll.bind(document);
+
+      4. ajax
+
+        if(window.XMLHttpRequest){
+          var xhr=new XMLHttpRequest();  //不兼容ie6
+        }else{
+          var xhr=new ActiveXObject("Microsoft.XMLHttp");
+        }
+
+        //连接
+        xhr.open('GET','url',true);
+        //true异步——并行
+        //false同步——串行 会阻塞主线程
+
+        //发送
+        xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+        xhr.send();
+
+        //接收
+        //状态
+        //0初始化 1连接 2发送 3已接收(头) 4已接收
+        //http状态码
+        //1xx 消息
+        //2xx 成功
+        //3xx 重定向
+        //  301 永久重定向
+        //  302 临时重定向
+        //  304 找缓存
+        //4xx 请求错误
+        //5xx 服务器错误
+        //  503 服务不可用
+        //6xx 可拓展
+        xhr.onreadystatechange=function(){
+          alert(xhr.readystate);
+          if(xhr.readystate==4){
+            if(xhr.status>=200 && xhr.status<=300 || xhr.status==304){
+              alert('成功${xhr.responseText}');
+              //xhr.responseXML
+            }else{
+              alert('失败');
+            }
+          }
+        }
+
+        post提交到后台的三种content-type
+          application/x-www-form-urlencoded
+          text/plain
+
+
+        表单提交文件时需要设置enctype属性为multipart/form-data
+
+
+
+      --------------------------------------------------------------------------
+
+      缓存并不一定不向服务器请求
+
+      重定向  给浏览器下命令，让浏览器请求另一个网址——地址变化
+      转发    在服务器内部，把请求交给另外一个模块处理，对客户端不可见——地址不变
+
+      --------------------------------------------------------------------------
+
+      什么时候用表单什么时候用ajax
+        1. 表单——稳定
+        2. ajax——用户体验
+
+      表单重复提交如何处理
+        1. 开始提交时禁用submit
+        2. 成功/失败时启用submit
+
+      怎么删除已签名的cookie
+        连带签名一起删
+
+      单点登录oauth2
+
+      --------------------------------------------------------------------------
+
+    3. 原生JS
+
 
 
 
