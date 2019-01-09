@@ -140,7 +140,7 @@ atom
 
         }
 
-        c++的默认参数必须放在最后,这个默认参数需要放在最后么?
+        c++的默认参数必须放在最后,这个默认参数需要放在最后么?(不需要)
 
       参数展开(剩余参数,数组展开)
         1. 三个点第1个作用：接收剩余参数
@@ -554,179 +554,245 @@ atom
 
   ---------------------------------------------------------------
 
-  底层原理
-    数据交互
-      1. 表单      最基本最简单        http所有数据其实都是表单
-      2. ajax      不用刷新页面       网慢的情况下可能存在重复提交
-      3. jsonp     跨域,安全性太差    只能发起get请求
-      4. WebSocket 快、双向、跨域
+2. 底层原理
+  数据交互
+    1. 表单      最基本最简单        http所有数据其实都是表单
+    2. ajax      不用刷新页面       网慢的情况下可能存在重复提交
+    3. jsonp     跨域,安全性太差    只能发起get请求
+    4. WebSocket 快、双向、跨域
 
-      ajax      性能低                   单工
-      websocket 性能能高   考虑大量数据   双工    跨域
+    ajax      性能低                   单工
+    websocket 性能能高   考虑大量数据   双工    跨域
 
-      ajax 轮询更新数据
-      websocket
+    ajax 轮询更新数据
+    websocket
 
-    跨域:
-      必须情况:
-        1. 网址域名改变
-        2. 第三方数据
+  跨域:
+    必须情况:
+      1. 网址域名改变
+      2. 第三方数据
 
-      方式:
-        1. 表单
-        2. ajax——麻烦、安全
-        3. jsonp——简单、有风险
-        4. ws
+    方式:
+      1. 表单
+      2. ajax——麻烦、安全
+      3. jsonp——简单、有风险
+      4. ws
 
-    1. http协议
-      http1.0   一次性连接
-      http1.1   保持连接   性能提升
-      http2.0(草案)
-        1. 强制https
-        2. 自带双向通信
-        3. 多路复用
-      http      容易被攻击
-      https     安全
+  1. http协议
+    http1.0   一次性连接
+    http1.1   保持连接   性能提升
+    http2.0(草案)
+      1. 强制https
+      2. 自带双向通信
+      3. 多路复用
+    http      容易被攻击
+    https     安全
 
-      1. 三次握手
-      2. http
-        http头<=32k
-        http体<=1g
+    1. 三次握手
+    2. http
+      http头<=32k
+      http体<=1g
 
-    ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
 
-    osi七层参考模型
-      1. 物理层
-      2. 数据链路层
-      3. 网络层
-      4. 传输层
-      5. 会话层
-      6. 表达层
-      7. 应用层
+  osi七层参考模型
+    1. 物理层
+    2. 数据链路层
+    3. 网络层
+    4. 传输层
+    5. 会话层
+    6. 表达层
+    7. 应用层
 
-    五层模型
-      1. 物理层
-      2. 链路层
-      3. 网络层
-      4. 传输层
-        TCP——传输控制协议
-        UDP——用户数据报协议
-      5. 应用层
+  五层模型
+    1. 物理层
+    2. 链路层
+    3. 网络层
+    4. 传输层
+      TCP——传输控制协议
+      UDP——用户数据报协议
+    5. 应用层
 
-    ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
 
-    2. 表单(服务器不区分表单、ajax和jsonp)
-      1. 属性
-        action:提交地址
-        methods:方式:GET/POST/HEAD/DELETE
-        name:必须加、可以重复(重复情况下服务器那边是数组)
-        value:
-        type:
+  2. 表单(服务器不区分表单、ajax和jsonp)
+    1. 属性
+      action:提交地址
+      methods:方式:GET/POST/HEAD/DELETE
+      name:必须加、可以重复(重复情况下服务器那边是数组)
+      value:
+      type:
 
-      2. 数据提交方法
-        GET    数据存在url里
-          1. 容量有限
-          2. 看得见(表单)
-          3. 有缓存
-          4. 利于分享和收藏
+    2. 数据提交方法
+      GET    数据存在url里
+        1. 容量有限
+        2. 看得见(表单)
+        3. 有缓存
+        4. 利于分享和收藏
 
-        POST   数据放在http-body里
-          1. 容量大
-          2. 看不见
-          3. 无缓存
-          4. 无法分享和收藏
+      POST   数据放在http-body里
+        1. 容量大
+        2. 看不见
+        3. 无缓存
+        4. 无法分享和收藏
 
-        两种方法安全性相同
+      两种方法安全性相同
 
-      3. 校验
-        可以
-        const $=function(...args){
-          return document.querySelectoAll(...args);
+    3. 校验
+      可以
+      const $=function(...args){
+        return document.querySelectoAll(...args);
+      }
+      不能
+      const $=document.querySelectoAll;//这种写会导致this 指向window而不是document
+      可以
+      const $=document.querySelectoAll.bind(document);
+
+    4. ajax
+
+      if(window.XMLHttpRequest){
+        var xhr=new XMLHttpRequest();  //不兼容ie6
+      }else{
+        var xhr=new ActiveXObject("Microsoft.XMLHttp");
+      }
+
+      //连接
+      xhr.open('GET','url',true);
+      //true异步——并行
+      //false同步——串行 会阻塞主线程
+
+      //发送
+      xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+      xhr.send();
+
+      //接收
+      //状态
+      //0初始化 1连接 2发送 3已接收(头) 4已接收
+      //http状态码
+      //1xx 消息
+      //2xx 成功
+      //3xx 重定向
+      //  301 永久重定向
+      //  302 临时重定向
+      //  304 找缓存
+      //4xx 请求错误
+      //5xx 服务器错误
+      //  503 服务不可用
+      //6xx 可拓展
+      xhr.onreadystatechange=function(){
+        alert(xhr.readyState);
+        if(xhr.readyState==4){
+          if(xhr.status>=200 && xhr.status<=300 || xhr.status==304){
+            alert('成功${xhr.responseText}');
+            //xhr.responseXML
+          }else{
+            alert('失败');
+          }
         }
-        不能
-        const $=document.querySelectoAll;//这种写会导致this 指向window而不是document
-        可以
-        const $=document.querySelectoAll.bind(document);
+      }
 
-      4. ajax
+      post提交到后台修改content-type
+        application/x-www-form-urlencoded
 
+      ajax封装
+      function ajax(options){
+        //参数超过五个且不能缩减，用对象
+        options=options || {};
+        options.type=options.type || 'GET';
+        options.data=options.data || {};
+        options.datatype=options.datatype || 'text';
+
+        let arr=[];
+        for(let name in options.data){
+          arr.push(`${encodeURIComponent(name)}=${encodeURIComponent(options.data[name])}`);
+        }
+        let str=arr.join('&');
+
+        let xhr;
         if(window.XMLHttpRequest){
-          var xhr=new XMLHttpRequest();  //不兼容ie6
+          xhr=new window.XMLHttpRequest();
         }else{
-          var xhr=new ActiveXObject("Microsoft.XMLHttp");
+          xhr=new ActiveXObject("Microsoft.XMLHttp");
+        }
+        if(options.type=='GET'){
+          xhr.open(options.type,`${options.url}?${str}`,true);
+          xhr.send();
+        }else{
+          xhr.open(options.type,options.url,true);
+          xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+          xhr.send(str);
         }
 
-        //连接
-        xhr.open('GET','url',true);
-        //true异步——并行
-        //false同步——串行 会阻塞主线程
-
-        //发送
-        xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
-        xhr.send();
-
-        //接收
-        //状态
-        //0初始化 1连接 2发送 3已接收(头) 4已接收
-        //http状态码
-        //1xx 消息
-        //2xx 成功
-        //3xx 重定向
-        //  301 永久重定向
-        //  302 临时重定向
-        //  304 找缓存
-        //4xx 请求错误
-        //5xx 服务器错误
-        //  503 服务不可用
-        //6xx 可拓展
         xhr.onreadystatechange=function(){
-          alert(xhr.readystate);
-          if(xhr.readystate==4){
+          if(xhr.readyState==4){
             if(xhr.status>=200 && xhr.status<=300 || xhr.status==304){
-              alert('成功${xhr.responseText}');
-              //xhr.responseXML
+              let data=xhr.responseText;
+              switch(options.datatype){
+                case 'json':
+                  if(JSON && JSON.parse){
+                    data=JSON.parse(data);
+                  }else{
+                    data=eval('('+data+')');
+                  }
+                break;
+                case 'xml':
+                  data=xhr.responseXML;
+                break;
+                default:
+                break;
+              }
+              options.success && options.success(data);
             }else{
-              alert('失败');
+              options.error && options.error();
             }
           }
         }
+      }
 
-        post提交到后台的三种content-type
-          application/x-www-form-urlencoded
-          text/plain
+      表单提交文件时需要设置enctype属性为multipart/form-data
 
+    --------------------------------------------------------------------------
 
-        表单提交文件时需要设置enctype属性为multipart/form-data
+    缓存并不一定不向服务器请求
 
+    重定向  给浏览器下命令，让浏览器请求另一个网址——地址变化
+    转发    在服务器内部，把请求交给另外一个模块处理，对客户端不可见——地址不变
 
+    --------------------------------------------------------------------------
 
-      --------------------------------------------------------------------------
+    什么时候用表单什么时候用ajax
+      1. 表单——稳定
+      2. ajax——用户体验
 
-      缓存并不一定不向服务器请求
+    表单重复提交如何处理
+      1. 开始提交时禁用submit
+      2. 成功/失败时启用submit
 
-      重定向  给浏览器下命令，让浏览器请求另一个网址——地址变化
-      转发    在服务器内部，把请求交给另外一个模块处理，对客户端不可见——地址不变
+    怎么删除已签名的cookie
+      连带签名一起删
 
-      --------------------------------------------------------------------------
+    单点登录oauth2
 
-      什么时候用表单什么时候用ajax
-        1. 表单——稳定
-        2. ajax——用户体验
+    restful 风格/习惯
 
-      表单重复提交如何处理
-        1. 开始提交时禁用submit
-        2. 成功/失败时启用submit
+    content-type:
+      text/plain        纯文本
+      application/x-www-form-urlencoded
+      multipart/form-data 定界符分割各个数据
 
-      怎么删除已签名的cookie
-        连带签名一起删
+    urlencoded=>url 编码 名字=值&名字=值
 
-      单点登录oauth2
+    --------------------------------------------------------------------------
 
-      --------------------------------------------------------------------------
+  3. 跨域
+    1. jsonp(跨域)
+      安全性问题-过于开放
 
-    3. 原生JS
+    2. ajax cors跨域
 
+    3. websocket
 
+3. 
 
 
 
