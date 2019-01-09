@@ -792,7 +792,142 @@ atom
 
     3. websocket
 
-3. 
+3. nodejs
+  1. 原生nodeJS
+    NodeJS和其他后台语言的不同
+      优点
+      1. nodejs的对象、语法和javaScript一模一样
+      2. nodejs性能还可以80多倍  PHP、Java
+      3. 前后台配合方便
+
+      缺点
+      1. Java极其丰富的库支持
+
+    用处
+      1. 服务器——小型后台系统、中间层
+      2. 工具
+        测试、构建(grunt、gulp、webpack...)、抓取
+
+    运行NodeJS程序
+      node xxx.js
+
+    如何用nodejs搭建web服务器
+      require //引入一个模块
+      const http=require("http");
+      let server=http.createServer((req,res)=>{
+        //浏览器访问时的回调函数
+        //req 请求数据
+        //res 返回数据
+        console.log("fjjd");//访问会执行两次 一次访问/ 一次访问/favicon.ico
+        res.write(str);
+        res.end();//必须否则浏览器不知道数据发送完了
+      })
+      server.listen(8080);
+
+    ---------------------------------------------------------------------------
+
+    NodeJS大量依靠模块
+    常用端口:
+      http:80
+      mysql:3306
+
+    NodeJS能处理并发么
+      NodeJS和JS一样都是单线程、单进程
+      非阻塞的异步交互  ???
+      阻塞IO(c语言):前一个IO没完事，程序等着           同步
+      非阻塞IO(JAVA,Node):前一个IO没完事，程序接着跑   异步
+
+    NodeJS作中间层的好处
+      安全性、性能(可以做一些缓存)、前台交互
+
+    createServer 中回调函数的执行过程
+      socket.on('data',function(){
+        req=解析请求;
+        res=socket;
+        cb(req,res);
+      })
+
+    NodeJS三大特性
+      单线程、非阻塞IO、事件循环
+
+    负载均衡——架构师
+
+    正向代理：内部网络对外部的访问
+    反向代理：外部网络对内部的访问
+
+    js深浅拷贝
+      js对象赋值是引用形式
+      浅拷贝：let arr1=arr2.concat([]);//一层
+      深拷贝：let arr1=JSON.parse(JSON.stringify(arr2));
+
+    ----------------------------------------------------------------------------
+
+    NodeJS模块:
+      1. HTTP/HTTPS/ HTTP/2
+      2. 断言
+        const assert=require("assert");
+        assert(条件,否时)
+      3. Async Hooks (回调行为)
+      4. 帮助处理二进制数——Buffer(文件/图片)
+        File System
+          const fs=require('fs')
+          fs.readFile('path',(err,data)=>{
+            //data为Buffer对象
+            //二进制数据文件不要转为字符串
+          });
+          fs.writeFile('path','fdsfhdj',err=>{
+
+          });
+      5. C++ Addons (c++插件)
+      6. 多进程(无法多线程)
+        Child Processes
+        Cluster
+        Process
+      7. Crypto——签名
+        md5、sha
+      8. OS——操作系统信息
+      9. Path——处理路径
+      10. 
+
+      Debugger
+      Deprecated APIs
+      DNS
+      Domain
+      ECMAScript Modules
+      Errors
+      Events
+      File System
+      Globals
+
+      Inspector
+      Internationalization
+      Modules
+      Net
+      OS
+      Path
+      Performance Hooks
+      Process
+      Punycode
+      Query Strings
+      Readline
+      REPL
+      Stream
+      String Decoder
+      Timers
+      TLS/SSL
+      Trace Events
+      TTY
+      UDP/Datagram
+      URL
+      Utilities
+      V8
+      VM
+      Worker Threads
+      ZLIB
+
+
+
+
 
 
 
