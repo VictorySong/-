@@ -885,10 +885,41 @@ atom
         Process
       7. Crypto——签名
         md5、sha
+        const crypto=require("crypto");
+        let obj=crypto.createHash('md5');
+        obj.update("fjd");
+        console.log(obj.digest('hex'));
       8. OS——操作系统信息
       9. Path——处理路径
-      10.
+      10.Events——事件队列
+        async
 
+        const EventEmitter = require('events');
+        class MyEmitter extends EventEmitter {}
+        const myEmitter = new MyEmitter();
+        myEmitter.on('event', (a,b,c) => {
+          console.log('an event occurred!');
+        });
+        myEmitter.emit('event',12,12,12);
+      11. Query Strings
+        const querystring=require('querystring');
+        let obj=querystring.parse("a=12&b=13");
+        console.log(obj);
+
+
+    ----------------------------------------------------------------------------
+
+    怎么加密才最安全
+      一次一密 密钥长度>内容长度
+      目前最安全：RSA
+
+    双层md5
+      md5是单层散列，双层md5是散列后加混淆再散列
+
+    多进程  成本高  慢  安全    通信麻烦  写代码简单
+    多线程  成本低  快  不安全  通信简单  写代码复杂
+
+    ----------------------------------------------------------------------------
       Debugger
       Deprecated APIs
       DNS
