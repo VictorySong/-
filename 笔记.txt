@@ -824,8 +824,27 @@ atom
       })
       server.listen(8080);
 
+      //解析url
+      const http=require("http");
+      const fs=require("fs");
+      let s=http.createServer((req,res)=>{
+        fs.readFile(`.${req.url}`,(err,data)=>{
+          if(err){
+            console.log("出错");
+            res.writeHeader(404);
+            res.write('Not Found');
+          }else{
+            res.write(data);
+          }
+          res.end();  //这个res.end()因为异步操作事件循环的问题不能放在 1 位置
+        });
+      });
+      //res.end()                                      1
+      s.listen(8080);
+
     ---------------------------------------------------------------------------
 
+    ps:
     NodeJS大量依靠模块
     常用端口:
       http:80
@@ -862,6 +881,7 @@ atom
 
     ----------------------------------------------------------------------------
 
+    ps:
     NodeJS模块:
       1. HTTP/HTTPS/ HTTP/2
       2. 断言
@@ -906,9 +926,33 @@ atom
         let obj=querystring.parse("a=12&b=13");
         console.log(obj);
 
+        URL
+          const url=require("url");
+          let obj=url.parse("https://www.nuaakx.com/?a=12&b=13",true);
+          console.log(obj);
+      12. 网络
+        TCP——稳定  Net
+        UDP——快    UDP/Datagram
+      13. 域名解析
+        DNS
+        const dns=require("dns");
+        dns.resolve('baidu.com',(err,res)=>{
+          if(err){
+            console.log('解析失败');
+          }else{
+            console.log(res);
+          }
+        })
+      14. 流操作
+        连续数据都叫流——视频流、网络流、文件流、语音流
+      15. TLS/SSL
+        加密、安全(https基于SSL)
+      16. ZLTB——gz
+        压缩
 
     ----------------------------------------------------------------------------
 
+    ps:
     怎么加密才最安全
       一次一密 密钥长度>内容长度
       目前最安全：RSA
@@ -919,42 +963,39 @@ atom
     多进程  成本高  慢  安全    通信麻烦  写代码简单
     多线程  成本低  快  不安全  通信简单  写代码复杂
 
-    ----------------------------------------------------------------------------
-      Debugger
-      Deprecated APIs
-      DNS
-      Domain
-      ECMAScript Modules
-      Errors
-      Events
-      File System
-      Globals
+    require:http://www.ruanyifeng.com/blog/2015/05/require.html
+      任何一个js文件都是一个moudle,在被require时都会执行
+      require 不是全局命令而是每个模块内部提供的方法
 
-      Inspector
-      Internationalization
-      Modules
-      Net
-      OS
-      Path
-      Performance Hooks
-      Process
-      Punycode
-      Query Strings
-      Readline
-      REPL
-      Stream
-      String Decoder
-      Timers
-      TLS/SSL
-      Trace Events
-      TTY
-      UDP/Datagram
-      URL
-      Utilities
-      V8
-      VM
-      Worker Threads
-      ZLIB
+    程序员
+      1. 算法
+      2. 设计模式
+      3. 架构
+
+    网站被运营商劫持可以用https加密
+
+    进程通信
+      1. 管道
+      2. 共享内存
+      3. socket
+
+    前端把加密数据传到后台，后台怎么校验
+      签名
+
+    加密算法
+      RSA
+
+    ----------------------------------------------------------------------------
+
+    Web服务器:
+      1. 返回文件
+      2. 数据交互(get/post)
+      3. 数据库
+
+    大数据包要分割成一堆小
+
+    ----------------------------------------------------------------------------
+
 
 
 
