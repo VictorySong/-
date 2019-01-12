@@ -919,42 +919,135 @@ atom
     多进程  成本高  慢  安全    通信麻烦  写代码简单
     多线程  成本低  快  不安全  通信简单  写代码复杂
 
-    ----------------------------------------------------------------------------
-      Debugger
-      Deprecated APIs
-      DNS
-      Domain
-      ECMAScript Modules
-      Errors
-      Events
-      File System
-      Globals
+    一个大数据包为啥切成一堆小包
+      1. 方便所有人
+      2. 容错强
 
-      Inspector
-      Internationalization
-      Modules
-      Net
-      OS
-      Path
-      Performance Hooks
-      Process
-      Punycode
-      Query Strings
-      Readline
-      REPL
-      Stream
-      String Decoder
-      Timers
-      TLS/SSL
-      Trace Events
-      TTY
-      UDP/Datagram
-      URL
-      Utilities
-      V8
-      VM
-      Worker Threads
-      ZLIB
+    on监听是轮询么
+      不是，是监听/通知/回调/异步
+
+    安全性:99%的漏洞都是懒
+      1. 一切来自前台的数据都是不可靠的
+      2. 前后台都要进行数据校验
+        前台校验：用户体验
+        后台校验：安全性
+
+    为什么http://localhost/../index.php 无法访问
+
+    在localhost的网站ajax访问localhost:8080的网址在networks中能看到请求和返回的结果
+    但是浏览器提示跨域并且无法显示结果,所以同一服务器的不同端口也算跨域
+
+    ----------------------------------------------------------------------------
+
+    Nodejs数据交互
+      //处理post数据
+      const http=require("http");
+      const querystring=require("querystring");
+
+      let server=http.createServer((req,res)=>{
+        let str='';  //这种方式在处理文件时是有缺陷的
+        req.on('data',data=>{
+          str+=data;
+        });
+        req.on('end',()=>{
+          let post=querystring.parse(str);
+          console.log(post);
+          res.write(str);
+          res.end();
+        });
+      });
+      server.listen(8080);
+
+      //处理post和get
+      const http=require('http');
+      const url=require('url');
+      const querystring=require('querystring');
+      let server=http.createServer((req,res)=>{
+        let {query:get,pathname}=url.parse(req.url,true);
+        let str='';
+        req.on('data',data=>{
+          str+=data;
+        });
+        req.on('end',()=>{
+          let post=querystring.parse(str);
+          console.log(get,post);
+          res.end();
+        });
+      });
+      server.listen(8080);
+
+      url.parse('')//解析url
+      querystring.parse('')//解析数据
+
+    接口
+      定下来——接口文档
+      写下来
+      
+      注册/登录
+      const http=require('http');
+      const url=require('url');
+      const querystring=require('querystring');
+      const fs=require('fs');
+      let users={
+        //"user":"passwd"
+      }
+      let server=http.createServer((req,res)=>{
+        let {query:get,pathname}=url.parse(req.url,true);
+        let str='';
+        req.on('data',data=>{
+          str+=data;
+        });
+        req.on('end',()=>{
+          let post=querystring.parse(str);
+          console.log(get,post);
+          switch(pathname){
+            case '/reg':
+              if(!get["user"]){
+                res.write(`{"error":1,"msg":"username is needed"}`);
+              }else if(!get["passwd"]){
+                res.write(`{"error":1,"msg":"passwd is needed"}`);
+              }else if(/[^a-z]{8,18}$/.test(get["user"])){
+                res.write(`{"error":1,"msg":"invalid username"}`);
+              }else if(/[\'\"]+/.test(get["passwd"])){
+                res.write(`{"error":1,"msg":"invalid passwd"}`);
+              }else if(users[get["user"]]){
+                res.write(`{"error":1,"msg":"user has been registed"}`);
+              }else{
+                users[get["user"]]=get["passwd"];
+                res.write(`{"error":0,"msg":"successed"}`);
+              }
+              res.end();
+              break;
+            case '/login':
+              if(!get["user"]){
+                res.write(`{"error":1,"msg":"username is needed"}`);
+              }else if(!get["passwd"]){
+                res.write(`{"error":1,"msg":"passwd is needed"}`);
+              }else if(/[^a-z]{8,18}$/.test(get["user"])){
+                res.write(`{"error":1,"msg":"invalid user"}`);
+              }else if(/[\'\"]+/.test(get["passwd"])){
+                res.write(`{"error":1,"msg":"invalid passwd"}`);
+              }else if(!users[get["user"]] || get["passwd"]!=users[get["user"]]){
+                res.write(`{"error":1,"msg":"user or passwd is wrong"}`);
+              }else{
+                res.write(`{"error":0,"msg":"successed"}`);
+              }
+              res.end();
+              break;
+            default:
+              fs.readFile(`../${pathname}`,(err,data)=>{
+                if(err){
+                  res.writeHeader(404);
+                }else{
+                  res.write(data);
+                }
+                res.end();
+              });
+              break;
+          }
+        });
+      });
+      server.listen(8080);
 
 
 
