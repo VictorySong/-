@@ -844,169 +844,169 @@ atom
 
     ---------------------------------------------------------------------------
 
-    ps:
-    NodeJS大量依靠模块
-    常用端口:
-      http:80
-      mysql:3306
+      ps:
+      NodeJS大量依靠模块
+      常用端口:
+        http:80
+        mysql:3306
 
-    NodeJS能处理并发么
-      NodeJS和JS一样都是单线程、单进程
-      非阻塞的异步交互  ???
-      阻塞IO(c语言):前一个IO没完事，程序等着           同步
-      非阻塞IO(JAVA,Node):前一个IO没完事，程序接着跑   异步
+      NodeJS能处理并发么
+        NodeJS和JS一样都是单线程、单进程
+        非阻塞的异步交互  ???
+        阻塞IO(c语言):前一个IO没完事，程序等着           同步
+        非阻塞IO(JAVA,Node):前一个IO没完事，程序接着跑   异步
 
-    NodeJS作中间层的好处
-      安全性、性能(可以做一些缓存)、前台交互
+      NodeJS作中间层的好处
+        安全性、性能(可以做一些缓存)、前台交互
 
-    createServer 中回调函数的执行过程
-      socket.on('data',function(){
-        req=解析请求;
-        res=socket;
-        cb(req,res);
-      })
-
-    NodeJS三大特性
-      单线程、非阻塞IO、事件循环
-
-    负载均衡——架构师
-
-    正向代理：内部网络对外部的访问
-    反向代理：外部网络对内部的访问
-
-    js深浅拷贝
-      js对象赋值是引用形式
-      浅拷贝：let arr1=arr2.concat([]);//一层
-      深拷贝：let arr1=JSON.parse(JSON.stringify(arr2));
-
-    ----------------------------------------------------------------------------
-
-    ps:
-    NodeJS模块:
-      1. HTTP/HTTPS/ HTTP/2
-      2. 断言
-        const assert=require("assert");
-        assert(条件,否时)
-      3. Async Hooks (回调行为)
-      4. 帮助处理二进制数——Buffer(文件/图片)
-        File System
-          const fs=require('fs')
-          fs.readFile('path',(err,data)=>{
-            //data为Buffer对象
-            //二进制数据文件不要转为字符串
-          });
-          fs.writeFile('path','fdsfhdj',err=>{
-
-          });
-      5. C++ Addons (c++插件)
-      6. 多进程(无法多线程)
-        Child Processes
-        Cluster
-        Process
-      7. Crypto——签名
-        md5、sha
-        const crypto=require("crypto");
-        let obj=crypto.createHash('md5');
-        obj.update("fjd");
-        console.log(obj.digest('hex'));
-      8. OS——操作系统信息
-      9. Path——处理路径
-      10.Events——事件队列
-        async
-
-        const EventEmitter = require('events');
-        class MyEmitter extends EventEmitter {}
-        const myEmitter = new MyEmitter();
-        myEmitter.on('event', (a,b,c) => {
-          console.log('an event occurred!');
-        });
-        myEmitter.emit('event',12,12,12);
-      11. Query Strings
-        const querystring=require('querystring');
-        let obj=querystring.parse("a=12&b=13");
-        console.log(obj);
-
-        URL
-          const url=require("url");
-          let obj=url.parse("https://www.nuaakx.com/?a=12&b=13",true);
-          console.log(obj);
-      12. 网络
-        TCP——稳定  Net
-        UDP——快    UDP/Datagram
-      13. 域名解析
-        DNS
-        const dns=require("dns");
-        dns.resolve('baidu.com',(err,res)=>{
-          if(err){
-            console.log('解析失败');
-          }else{
-            console.log(res);
-          }
+      createServer 中回调函数的执行过程
+        socket.on('data',function(){
+          req=解析请求;
+          res=socket;
+          cb(req,res);
         })
-      14. 流操作
-        连续数据都叫流——视频流、网络流、文件流、语音流
-      15. TLS/SSL
-        加密、安全(https基于SSL)
-      16. ZLTB——gz
-        压缩
+
+      NodeJS三大特性
+        单线程、非阻塞IO、事件循环
+
+      负载均衡——架构师
+
+      正向代理：内部网络对外部的访问
+      反向代理：外部网络对内部的访问
+
+      js深浅拷贝
+        js对象赋值是引用形式
+        浅拷贝：let arr1=arr2.concat([]);//一层
+        深拷贝：let arr1=JSON.parse(JSON.stringify(arr2));
 
     ----------------------------------------------------------------------------
 
-    ps:
-    怎么加密才最安全
-      一次一密 密钥长度>内容长度
-      目前最安全：RSA
+      ps:
+      NodeJS模块:
+        1. HTTP/HTTPS/ HTTP/2
+        2. 断言
+          const assert=require("assert");
+          assert(条件,否时)
+        3. Async Hooks (回调行为)
+        4. 帮助处理二进制数——Buffer(文件/图片)
+          File System
+            const fs=require('fs')
+            fs.readFile('path',(err,data)=>{
+              //data为Buffer对象
+              //二进制数据文件不要转为字符串
+            });
+            fs.writeFile('path','fdsfhdj',err=>{
 
-    双层md5
-      md5是单层散列，双层md5是散列后加混淆再散列
+            });
+        5. C++ Addons (c++插件)
+        6. 多进程(无法多线程)
+          Child Processes
+          Cluster
+          Process
+        7. Crypto——签名
+          md5、sha
+          const crypto=require("crypto");
+          let obj=crypto.createHash('md5');
+          obj.update("fjd");
+          console.log(obj.digest('hex'));
+        8. OS——操作系统信息
+        9. Path——处理路径
+        10.Events——事件队列
+          async
 
-    多进程  成本高  慢  安全    通信麻烦  写代码简单
-    多线程  成本低  快  不安全  通信简单  写代码复杂
+          const EventEmitter = require('events');
+          class MyEmitter extends EventEmitter {}
+          const myEmitter = new MyEmitter();
+          myEmitter.on('event', (a,b,c) => {
+            console.log('an event occurred!');
+          });
+          myEmitter.emit('event',12,12,12);
+        11. Query Strings
+          const querystring=require('querystring');
+          let obj=querystring.parse("a=12&b=13");
+          console.log(obj);
 
-    require:http://www.ruanyifeng.com/blog/2015/05/require.html
-      任何一个js文件都是一个moudle,在被require时都会执行
-      require 不是全局命令而是每个模块内部提供的方法
+          URL
+            const url=require("url");
+            let obj=url.parse("https://www.nuaakx.com/?a=12&b=13",true);
+            console.log(obj);
+        12. 网络
+          TCP——稳定  Net
+          UDP——快    UDP/Datagram
+        13. 域名解析
+          DNS
+          const dns=require("dns");
+          dns.resolve('baidu.com',(err,res)=>{
+            if(err){
+              console.log('解析失败');
+            }else{
+              console.log(res);
+            }
+          })
+        14. 流操作
+          连续数据都叫流——视频流、网络流、文件流、语音流
+        15. TLS/SSL
+          加密、安全(https基于SSL)
+        16. ZLTB——gz
+          压缩
 
-    程序员
-      1. 算法
-      2. 设计模式
-      3. 架构
+    ----------------------------------------------------------------------------
 
-    网站被运营商劫持可以用https加密
+      ps:
+      怎么加密才最安全
+        一次一密 密钥长度>内容长度
+        目前最安全：RSA
 
-    进程通信
-      1. 管道
-      2. 共享内存
-      3. socket
+      双层md5
+        md5是单层散列，双层md5是散列后加混淆再散列
 
-    前端把加密数据传到后台，后台怎么校验
-      签名
+      多进程  成本高  慢  安全    通信麻烦  写代码简单
+      多线程  成本低  快  不安全  通信简单  写代码复杂
 
-    加密算法
-      RSA
+      require:http://www.ruanyifeng.com/blog/2015/05/require.html
+        任何一个js文件都是一个moudle,在被require时都会执行
+        require 不是全局命令而是每个模块内部提供的方法
 
-    Web服务器:
-      1. 返回文件
-      2. 数据交互(get/post)
-      3. 数据库
+      程序员
+        1. 算法
+        2. 设计模式
+        3. 架构
 
-    一个大数据包为啥切成一堆小包
-      1. 方便所有人
-      2. 容错强
+      网站被运营商劫持可以用https加密
 
-    on监听是轮询么
-      不是，是监听/通知/回调/异步
+      进程通信
+        1. 管道
+        2. 共享内存
+        3. socket
 
-    安全性:99%的漏洞都是懒
-      1. 一切来自前台的数据都是不可靠的
-      2. 前后台都要进行数据校验
-        前台校验：用户体验
-        后台校验：安全性
+      前端把加密数据传到后台，后台怎么校验
+        签名
 
-    为什么http://localhost/../index.php 无法访问
+      加密算法
+        RSA
 
-    在localhost的网站ajax访问localhost:8080的网址在networks中能看到请求和返回的结果
-    但是浏览器提示跨域并且无法显示结果,所以同一服务器的不同端口也算跨域
+      Web服务器:
+        1. 返回文件
+        2. 数据交互(get/post)
+        3. 数据库
+
+      一个大数据包为啥切成一堆小包
+        1. 方便所有人
+        2. 容错强
+
+      on监听是轮询么
+        不是，是监听/通知/回调/异步
+
+      安全性:99%的漏洞都是懒
+        1. 一切来自前台的数据都是不可靠的
+        2. 前后台都要进行数据校验
+          前台校验：用户体验
+          后台校验：安全性
+
+      为什么http://localhost/../index.php 无法访问
+
+      在localhost的网站ajax访问localhost:8080的网址在networks中能看到请求和返回的结果
+      但是浏览器提示跨域并且无法显示结果,所以同一服务器的不同端口也算跨域
 
     ----------------------------------------------------------------------------
 
@@ -1119,6 +1119,65 @@ atom
         });
       });
       server.listen(8080);
+
+    数据库
+      1. 文件型数据库——sqlite
+        简单、不庞大
+      2. 关系型数据库——MySQL Oracle     最常见最常用
+        数据之间是有关系的 数据结构是固定的
+      3. 文档型数据库——MongDB
+        直接存储异构数据——方便
+      大型系统的主数据库——关系型
+      MySQL  80%   免费   绝大多数普通应用
+        性能高、安全性高
+        容灾性差
+      Oracle       要钱
+        容灾性强
+
+      SQL     性能差
+      NoSQL   没有复杂的关系、对性能有很高的要求
+        redis        在内存中 可以做负载平衡
+        memcached
+        hypertable
+        bigtable
+
+      数据仓库——海量数据
+
+    ---------------------------------------------------------------------------
+
+      磁盘增量镜像
+
+      Node缓存
+        第一次
+          服务器->浏览器
+            cache-control
+            expires
+            date
+        第二次
+          浏览器->服务器
+            get
+            date
+          服务器->浏览器(服务器将文件最后修改日期跟date比)
+            304(无内容)/200(有内容)
+
+      Node/JavaScript的垃圾回收 gc
+        1. 只要某个东西不再使用，释放掉所占据的内存
+        通过引用的计数，引用数为0时可以回收
+
+      重新发布数据后浏览器需要ctrl+r强制获取最新资源，如何做到通过F5刷新即可获取资源
+        1. 后台配置(把缓存禁了)
+        2. <script src="server.js?t=v1"></script>
+
+      服务器缓冲池
+        1. 最近最长使用的资源留在内存中(根据实际访问情况来定)
+
+    ---------------------------------------------------------------------------
+
+
+
+
+
+
 
 
 --------------------------------------------------------------------------------
