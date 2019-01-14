@@ -1171,7 +1171,92 @@ atom
       服务器缓冲池
         1. 最近最长使用的资源留在内存中(根据实际访问情况来定)
 
+      websocket长连接会不会影响性能
+        比新建立连接要好
+
+      表单的三种post
+        1. text/plain                                纯文本
+        2. application/x-www-form-urlencoded         url编码格式
+        3. multipart/form-data                       上传文件内容(切块)
+
+      http协议换行
+        \r\n
+
     ---------------------------------------------------------------------------
+
+    解析数据:
+      ------WebKitFormBoundarydASqAKbzA8knhLC2
+      Content-Disposition: form-data; name="a"
+
+      fjlds
+      ------WebKitFormBoundarydASqAKbzA8knhLC2
+      Content-Disposition: form-data; name="b"
+
+      fjksd
+      ------WebKitFormBoundarydASqAKbzA8knhLC2
+      Content-Disposition: form-data; name="file"; filename="file.txt"
+      Content-Type: text/plain
+
+      jfsldk
+      jfldks
+
+
+      jflksd
+
+      ------WebKitFormBoundarydASqAKbzA8knhLC2--
+
+      <分隔符>\r\n
+      数据描述\r\n\r\n数据内容\r\n
+      <分隔符>\r\n
+      数据描述\r\n\r\n数据内容\r\n
+      <分隔符>\r\n
+      数据描述1\r\n数据描述2\r\n\r\n数据内容\r\n
+      <分隔符>--\r\n
+
+      1. 用分隔符分割数据
+        [,
+        \r\n数据描述\r\n\r\n数据内容\r\n,
+        \r\n数据描述\r\n\r\n数据内容\r\n,
+        \r\n数据描述1\r\n数据描述2\r\n\r\n数据内容\r\n,
+        --\r\n]
+      2. 丢弃头尾数据
+        [\r\n数据描述\r\n\r\n数据内容\r\n,
+        \r\n数据描述\r\n\r\n数据内容\r\n,
+        \r\n数据描述1\r\n数据描述2\r\n\r\n数据内容\r\n]
+      3. 丢弃每一项头尾\r\n
+        [数据描述\r\n\r\n数据内容,
+        数据描述\r\n\r\n数据内容,
+        数据描述1\r\n数据描述2\r\n\r\n数据内容]
+      4. 用第一次出现的\r\n切分
+        普通数据:[数据描述,数据值]
+        或
+        文件数据:[数据描述1\r\n数据描述2,文件内容]
+      5. 判断描述里面有没有\r\n
+        有   文件数据
+        没有 普通数据
+      6. 分析数据描述
+      
+
+    Buffer数据处理
+      1. 查找 indexOf()
+      2. 截取 slice()
+      3. 分割
+      Buffer.prototype.split=Buffer.prototype.split||function (str){
+        let [cur,n]=[0,0];
+        let result=[];
+        while(cur<this.length){
+          n=this.indexOf(str,cur);
+          if(n!=-1){
+            result.push(this.slice(cur,n));
+            cur=n+str.length;
+          }else{
+            result.push(this.slice(cur));
+            break;
+          }
+        }
+        return result;
+      }
+
 
 
 
