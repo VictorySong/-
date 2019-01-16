@@ -930,6 +930,7 @@ atom
             const url=require("url");
             let obj=url.parse("https://www.nuaakx.com/?a=12&b=13",true);
             console.log(obj);
+
         12. 网络
           TCP——稳定  Net
           UDP——快    UDP/Datagram
@@ -1227,7 +1228,7 @@ atom
         [数据描述\r\n\r\n数据内容,
         数据描述\r\n\r\n数据内容,
         数据描述1\r\n数据描述2\r\n\r\n数据内容]
-      4. 用第一次出现的\r\n切分
+      4. 用第一次出现的\r\n\r\n切分
         普通数据:[数据描述,数据值]
         或
         文件数据:[数据描述1\r\n数据描述2,文件内容]
@@ -1235,7 +1236,91 @@ atom
         有   文件数据
         没有 普通数据
       6. 分析数据描述
-      
+
+      const http=require('http');
+      const split=require('./split.js');
+      const url=require('url');
+      const fs=require('fs');
+      const uuid=require('uuid/v4');
+
+      let server=http.createServer((req,res)=>{
+        let result=[];
+        let {pathname,query}=url.parse(req.url,true);
+        req.on('data',data=>{
+          result.push(data);
+        });
+        req.on('end',()=>{
+          let buf=Buffer.concat(result);
+          let arr=[];
+          let content_type;
+          let boundary;
+          if(req.headers["content-type"]){
+            [content_type,boundary]=req.headers["content-type"].split(";");
+            if(boundary){
+              boundary="--"+boundary.split("=")[1];
+            }
+          }
+          let post={};  //存储解析结果
+          switch(pathname){
+            case '/upload':
+              if(boundary){
+                //1. 用boundary分割
+                arr=buf.split(boundary);
+
+                //2. 删除头尾
+                arr.shift();
+                arr.pop();
+
+                //3. 丢弃每项头尾\r\n
+                arr=arr.map(data=>{
+                  return data.slice(2,data.length-2);
+                });
+
+                //4. 用第一次出现的\r\n\r\n切分
+                arr.forEach(buffer=>{
+                  let first=buffer.indexOf('\r\n\r\n');
+
+                  let disposition=buffer.slice(0,first);
+                  let content=buffer.slice(first+4);
+
+                  if(disposition.indexOf('\r\n')!=-1){
+                    let [line1,line2]=disposition.split('\r\n');
+                    let s=line1.split(';');
+                    let name=s[1].split('\"')[1];
+                    let filename=s[2].split('\"')[1];
+                    filename=uuid().replace(/\-/g,'')+filename.toString().match(/\.[a-zA-Z]+$/)[0];
+                    fs.writeFile('upload/'+filename,content,err=>{
+                      if(err){
+                        console.log('写入失败');
+                        console.log(err);
+                      }else{
+                        console.log('写入成功');
+                      }
+                    });
+                    post[name.toString()]={"filename":filename.toString(),"content":content};
+
+                  }else{
+                    let name=disposition.split(';')[1].split('\"')[1];
+                    post[name.toString()]=content.toString();
+                  }
+                });
+              }
+              break;
+            default:
+              break;
+          }
+          res.end();
+        });
+      })
+      server.listen(8080);
+
+      问题:
+        1. 错误:会等到所有数据到达后才开始处理
+           正确:收到一部分解析一部分             节约内存
+        2. fs.readFile()            将文件读完后才会执行回掉函数
+             1. 及其占用内存
+             2. 资源利用不充分
+           fs.writeFile()
 
     Buffer数据处理
       1. 查找 indexOf()
@@ -1256,6 +1341,143 @@ atom
         }
         return result;
       }
+
+    ----------------------------------------------------------------------------
+
+      npm install -D
+      -D工程依赖
+
+    ----------------------------------------------------------------------------
+
+    uuid guid
+      const uuid=require('uuid/v4');
+      console.log(uuid().replace(/\-/g,''));
+
+    流:
+      读一点 发一点
+      1. 读取流     fs.createrReadStream();
+      2. 写入流     fs.createrWriteStream();
+      3. 读写流     压缩、加密
+      const fs=require('fs');
+      const zlib=require('zlib');
+      let rs=fs.createReadStream('1.js');
+      let ws=fs.createWriteStream('2.js.gz');
+      let gz=zlib.createGzip();
+      rs.pipe(gz).pipe(ws);
+
+    基于流的服务器
+      const http=require('http');
+      const fs=require('fs');
+      const zlib=require('zlib');
+
+      let server=http.createServer((req,res)=>{
+        let rs=fs.createReadStream(`..${req.url}`);
+        let gz=zlib.createGzip();
+        res.setHeader('Content-Encoding','gzip');
+        rs.pipe(gz).pipe(res);
+        rs.on('error',err=>{
+          console.log('文件读取失败');
+          console.log(err);
+          res.writeHeader(404);
+          res.end();
+        });
+        rs.on('finish',()=>{
+          console.log('文件读写完毕');
+          res.write('haha');
+          res.end();
+        })
+      });
+      server.listen(8080);
+
+      这里面的rs.on('finish')好像没触发，为什么呢?
+      res.setHeader()和res.writeHeader()有什么不同呢?
+        writeHeader()是用来写状态的
+        setHeader()是用来写request header的
+
+    ----------------------------------------------------------------------------
+
+    流的底层原理还是不是readfile?
+      生产者/消费者模型
+
+    面向字节的设备    ->     键盘     一个字一个字处理
+    面向流的设备      ->     网卡     一块一块处理
+
+    post提交时如果xhr.send(xxx) 参数内容是{a:'12',b:{c:3}}应该如何解决
+      1. 直接发json
+        content-type: application/json
+        {"a":"12","b":{"c":3}}
+      2. 变相
+        content-type: urlencoded
+        data="%7B%22a%22%3A%2212%22%2C%22b%22%3A%7B%22c%22%3A3%7D%7D"
+        encodeURIComponent();
+        decodeURIComponent();
+
+    content-range  断点续传
+
+    服务端怎么判断文件类型
+      1. 为什么要判断      没必要
+      2. 简单:文件拓展名
+         复杂:分析文件结构
+
+    ----------------------------------------------------------------------------
+
+    缓存:
+      第一重要 缓存策略
+        cache-control
+        expires
+
+      第二重要 缓存实现过程
+        1. 第一次s->c:Last-Modified: Sun, 13 Jan 2019 06:56:13 GMT
+        2. 第二次c->s:If-Modified-Since: Sun, 13 Jan 2019 06:56:13 GMT
+        3. 第二次s->c:304
+      const http=require('http');
+      const fs=require('fs');
+      const url=require('url');
+      const zlib=require('zlib');
+      
+      let server=http.createServer((req,res)=>{
+        let {pathname}=url.parse(req.url,true);
+        pathname=`..${pathname}`;
+        fs.stat(pathname,(err,state)=>{
+          if(err){
+            res.writeHeader(404);
+            res.end();
+          }else{
+            let gz=zlib.createGzip();
+            let rs=fs.createReadStream(pathname);
+            res.setHeader('content-encoding','gzip');
+            console.log(req.headers);
+            if(req.headers['if-modified-since']){
+              let t=new Date(req.headers['if-modified-since']);
+              let ct=t.getTime()/1000;
+              let st=Math.floor(state.mtime.getTime()/1000);
+              console.log(ct,st);
+              if(ct<st){
+                //更新本地缓存
+                //这里Math.floor是很有必要的
+                update();
+              }else{
+                res.writeHeader(304);
+                res.end();
+              }
+            }else{
+              update();
+            }
+            function update(){
+              res.setHeader('last-modified',state.mtime.toGMTString());
+              rs.pipe(gz).pipe(res);
+              rs.on('error',err=>{
+                console.log(err);
+                res.writeHeader(404);
+                res.end();
+              });
+            }
+          }
+        });
+      });
+      server.listen(8080);
+
+
 
 
 
