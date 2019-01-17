@@ -1434,7 +1434,7 @@ atom
       const fs=require('fs');
       const url=require('url');
       const zlib=require('zlib');
-      
+
       let server=http.createServer((req,res)=>{
         let {pathname}=url.parse(req.url,true);
         pathname=`..${pathname}`;
@@ -1477,8 +1477,60 @@ atom
       });
       server.listen(8080);
 
+    ----------------------------------------------------------------------------
 
+    多进程:性能略低;简单、对程序员要求低
+    多线程:性能高;复杂、对程序员要求高
 
+    Node.js 默认：单进程、单线程
+    主进程：负责派生子进程
+    子进程：干活
+
+    localStorage:大5m   本地存储、替代cookie
+    cookie:4k
+
+    多进程更安全 充分利用cpu
+    进程：
+      1. 普通程序不能创建进程，只有系统进程才能创建进程
+      2. 进程是分裂出来的，只有主进程才能分裂
+      3. 分裂出来的两个进程执行同一套代码
+      4. 父子进程之间可以共享"句柄"   端口也算一个句柄
+
+    主进程=守护进程
+    子进程=工作进程
+
+    进程调度——开销
+
+    多个进程
+      第一个进程满了->开第二个进程->前两个满了->开第三个进程
+
+    进程回收pid会被回收利用
+
+    多个进程干不同活时需要自己来控制
+
+    ----------------------------------------------------------------------------
+
+    多进程:
+      const cluster=require('cluster');
+      const http=require('http');
+      const os=require('os');
+      let cpu=new os.cpus();
+      if(cluster.isMaster){
+        for(let i=0;i<cpu.length;i++){
+          cluster.fork();
+        }
+      }else{
+        console.log(`当前进程pid${process.pid}`);
+        let server=http.createServer((req,res)=>{
+          res.setHeader('content-type','text/javascript;charset=UTF-8');
+          res.write(`工作进程是${process.pid}`);
+          res.end();
+        });
+        server.listen(8080);
+      }
+
+    数据库:
+      
 
 
 
