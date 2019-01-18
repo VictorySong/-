@@ -1567,9 +1567,83 @@ atom
         主键
           1. 性能高
           2. 唯一
+      导入文件需要先建库
 
+    ----------------------------------------------------------------------------
 
+    ps:
+    触发器怎么使用
+      1. 事件
 
+    表情和图片不会直接存入数据库
+
+    utf-8存储单元是字节
+    utf-16存储单元是双字节
+
+    varchar 6 并不代表6个字节 可存6个字(多字节处理)
+
+    下载解析渲染绘制
+      1. 下载-数据加载
+      2. 渲染=绘制
+      渲染-慢
+        1. 页面东西多
+        2. 图片
+        3. DOM操作
+          display为none时不会影响
+          也可以先拷贝再操作后替换
+
+    const cluster=require('cluster');
+    const os=require('os');
+    let cpu=new os.cpus();
+    console.log(process.pid);
+    if(cluster.isMaster){
+      for(let i=0;i<cpu.length;i++){
+        cluster.fork();
+      }
+    }
+    这段程序执行完后还会挂起的原因是主进程要等待子进程结束
+    那为什么子进程不结束呢？子进程在什么情况下会结束呢？
+
+    缓存策略
+      1. url变了不缓存
+      2. 标准-每次都要请求服务器
+      3. 服务器配置
+      chrome在新的标签页输入已缓存的地址时会直接先从缓存中拿数据
+      Status Code: 200 OK (from disk cache)
+
+    ----------------------------------------------------------------------------
+
+    Node使用数据库
+      1. 连接
+        const mysql=require('mysql');
+        let db=mysql.createConnection({host:'localhost',user:'root',password:'123qazzxc',port:3306,database:'user_data'});
+        let db=mysql.createPool({host:'localhost',user:'root',password:'123qazzxc',port:3306,database:'user_data',connectionLimit:10});
+          connectionLimit默认值就是10
+      2. 查询
+        db.query('',(err,data)=>{})
+
+    SQL
+      4大查询
+        1. 增  INSERT
+          INSERET INTO 表 (字段列表) VALUES (值列表)
+        2. 删 DELETE
+          DELETE FROM 表 WHERE 条件
+        3. 改 UPDATE
+          UPDATE 表 SET 字段=值,字段2=值2 WHERE 条件
+        4. 查 SELECT
+          SELECT 字段,字段 FROM 表 WHERE 条件
+
+    ----------------------------------------------------------------------------
+
+    ps:
+    自增id删除一条后不会回收利用
+
+    删除项的几种方式
+      1. 逻辑删除
+      2. DELETE
+      3. 将删除项移到另外一个库(不存在添加字段)
+
+    ----------------------------------------------------------------------------
 
 
 
