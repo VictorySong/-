@@ -641,12 +641,12 @@ atom
     3. 校验
       可以
       const $=function(...args){
-        return document.querySelectoAll(...args);
+        return document.querySelectorAll(...args);
       }
       不能
-      const $=document.querySelectoAll;//这种写会导致this 指向window而不是document
+      const $=document.querySelectorAll;//这种写会导致this 指向window而不是document
       可以
-      const $=document.querySelectoAll.bind(document);
+      const $=document.querySelectorAll.bind(document);
 
     4. ajax
 
@@ -1645,7 +1645,136 @@ atom
       2. DELETE
       3. 将删除项移到另外一个库(不存在添加字段)
 
+     lastpass插件做密码管理
+
+     websocket
+       1. 双向通信
+       2. 自动跨域
+       3. 性能高
+       不是独立使用依赖于http服务
+
+
+
     ----------------------------------------------------------------------------
+
+    用户注册、登录
+      1. 数据结构
+      2. 接口  (可了解RESTful http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html )
+        注册:
+          /reg?user=xxx&pass=xxx
+          =>{err:0,msg:'原因'}
+        登录
+          /login?user=xxx&pass=xxx
+          =>{err:0,msg:'原因'}
+
+          const http=require('http');
+          const fs=require('fs');
+          const url=require('url');
+          const zlib=require('zlib');
+          const mysql=require('mysql');
+
+          let ob=mysql.createPool({host:'localhost',user:'root',password:'123qazzxc',database:'user_data',port:3306});
+          let server=http.createServer((req,res)=>{
+            let {pathname,query}=url.parse(req.url,true);
+            switch(pathname){
+              case '/reg':{
+                let {user,pass}=query;
+                res.setHeader('content-type','application/json');
+
+                //校验 在这一步防止注入
+                if(!/\w{4,16}/.test(user)){
+                  res.writeHeader(400);
+                  res.end(`{"msg":"database error"}`);
+                }else{
+                  ob.query(`SELECT username FROM user_password WHERE username='${user}'`,(err,data)=>{
+                    if(err){
+                      console.log('数据库查询出错');
+                      console.log(err);
+                      res.writeHeader(500);
+                      res.end(`{"msg":"database error"}`);
+                    }else if(data.length>0){
+                      res.writeHeader(400);
+                      res.end(`{"msg":"username is exist"}`);
+                    }else{
+                      ob.query(`INSERT INTO user_password (username,password) VALUES ('${user}','${pass}')`,(err,data)=>{
+                        if(err){
+                          console.log('数据库插入出错');
+                          res.writeHeader(500);
+                          res.end(`{"msg":"database error"}`);
+                        }else{
+                          res.end(`{"msg":"success"}`);
+                        }
+                      });
+                    }
+                  });
+                }
+                break;
+              }
+              case '/login':{
+                let {user,pass}=query;
+                res.setHeader('content-type','application/json');
+
+                if(!/\w{4,16}/.test(user)){
+                  res.writeHeader(400);
+                  res.end(`{"msg":"user name is invalid"}`);
+                }else{
+                  ob.query(`SELECT password FROM user_password WHERE username='${user}'`,(err,data)=>{
+                    if(err){
+                      res.writeHeader(500);
+                      res.end(`{"msg":"database error"}`);
+                    }else if(data.length==0){
+                      res.writeHeader(400);
+                      res.end(`{"msg":"username is not regitsted"}`);
+                    }else{
+                      res.writeHeader(200);
+                      res.end(`{"msg":"succeed to login"}`);
+                    }
+                  });
+                }
+                break;
+              }
+              default:
+                pathname=`..${pathname}`;
+                fs.stat(pathname,(err,data)=>{
+                  if(err){
+                    console.log(err);
+                    res.writeHeader(400);
+                    res.end();
+                  }else{
+                    if(req.headers["if-modified-since"]){
+                      let ct=new Date(req.headers["if-modified-since"]);
+                      ct=Math.floor(ct.getTime()/1000);
+                      let st=Math.floor(data.mtime.getTime()/1000);
+                      if(ct<st){
+                        update();
+                      }else{
+                        res.writeHeader(304);
+                        res.end();
+                      }
+                    }else{
+                      update();
+                    }
+                    function update(){
+                      let rs=fs.createReadStream(pathname);
+                      let gz=zlib.createGzip();
+                      res.setHeader('content-encoding','gzip');
+                      res.setHeader('last-modified',data.mtime.toGMTString());
+                      rs.pipe(gz).pipe(res);
+
+                      rs.on('error',err=>{
+                        console.log("数据传输出错");
+                      });
+                      rs.on('finish',()=>{
+                        res.end();
+                      });
+                    }
+                  }
+                })
+                break;
+            }
+          });
+          server.listen(8080);
+
 
 
 
