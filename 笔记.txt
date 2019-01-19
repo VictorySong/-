@@ -1647,14 +1647,6 @@ atom
 
      lastpass插件做密码管理
 
-     websocket
-       1. 双向通信
-       2. 自动跨域
-       3. 性能高
-       不是独立使用依赖于http服务
-
-
-
     ----------------------------------------------------------------------------
 
     用户注册、登录
@@ -1775,6 +1767,37 @@ atom
           });
           server.listen(8080);
 
+    ----------------------------------------------------------------------------
+
+    websocket
+      1. 双向通信
+      2. 自动跨域
+      3. 性能高
+      不是独立使用依赖于http服务
+
+    ----------------------------------------------------------------------------
+
+    socket.io
+      server
+        const http=require('http');
+        const io=require('socket.io');
+        let server=http.createServer();
+        let wsServer=io.listen(server);
+        wsServer.on('connection',socket=>{
+          console.log('有新连接');
+          socket.on('test',(a,b,c)=>{
+            console.log(a,b,c);
+          });
+        });
+        server.listen(8080);
+
+      client
+        <script type="text/javascript" src='http://localhost:8080/socket.io/socket.io.js' charset='utf-8'>
+        </script>
+        <script type="text/javascript">
+          let socket=io.connect('ws://localhost:8080/');
+          socket.emit('test',12,'fjk',{a:'fjlf'});
+        </script>
 
 
 
